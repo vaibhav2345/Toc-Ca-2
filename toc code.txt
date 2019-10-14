@@ -1,0 +1,60 @@
+//shree
+#include<stdlib.h>
+#include<stdio.h>
+
+struct state
+{
+	int data;
+	struct state *transition_a;
+	struct state *transition_b;
+};
+
+
+//DFA
+struct state* create_dfa()
+{
+	struct state *q0,*q1,*q2,*T;
+	q0=(struct state*) malloc(sizeof(struct state*));
+	q1=(struct state*) malloc(sizeof(struct state*));
+	q2=(struct state*) malloc(sizeof(struct state*));
+	T=(struct state*) malloc(sizeof(struct state*));
+	q0->transition_a=q1;
+	q0->transition_b=T;
+	q0->data=0;
+	q1->transition_a=q2;
+	q1->transition_b=q1;
+	q1->data=0;
+	q2->transition_a=q2;
+	q2->transition_b=q1;
+	q2->data=1;
+	T->transition_a=T;
+	T->transition_b=T;
+	T->data=0;
+	return q0;	
+}
+
+int main()
+{
+	struct state *temp;
+	temp=(struct state*)malloc(sizeof(struct state*));
+	temp=create_dfa();
+	printf("Enter string\n");
+	char string[100];
+	scanf("%s",string);
+	int i=0;
+	while(string[i]!='\0')
+	{
+		if(string[i]=='a')
+			temp=temp->transition_a;
+		if(string[i]=='b')
+		temp=temp->transition_b;
+		i++;
+		//printf("%d\n",i);
+		
+	}
+	if(temp->data==0)
+	printf("Not accepeted\n");
+	if(temp->data==1)
+	printf("Accepted\n");
+
+}
